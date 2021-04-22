@@ -26,16 +26,16 @@ type page struct {
 
 // KeyStoreCache is a LRU cache for string key-value pairs
 type KeyStoreCache struct {
-	cache map[string]*list.Element
-	pages list.List
-	load  func(string) string
+	cache  map[string]*list.Element
+	pages  list.List
+	loader KeyStoreCacheLoader
 }
 
 // New creates a new KeyStoreCache
-func New(load KeyStoreCacheLoader) *KeyStoreCache {
+func New(loader KeyStoreCacheLoader) *KeyStoreCache {
 	return &KeyStoreCache{
-		load:  load.Load,
-		cache: make(map[string]*list.Element),
+		loader: loader,
+		cache:  make(map[string]*list.Element),
 	}
 }
 
@@ -46,7 +46,7 @@ func (k *KeyStoreCache) Get(key string) string {
 		return e.Value.(page).Value
 	}
 	// Miss - load from database and save it in cache
-	p := page{key, k.load(key)}
+	p := page{key, k.loader.Load(key)}
 	// if cache is full remove the least used item
 	if len(k.cache) >= CacheSize {
 		end := k.pages.Back()
