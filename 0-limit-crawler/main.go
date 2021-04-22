@@ -12,6 +12,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 // Crawl uses `fetcher` from the `mockfetcher.go` file to imitate a
@@ -23,6 +24,7 @@ func Crawl(url string, depth int, wg *sync.WaitGroup) {
 		return
 	}
 
+	<-c
 	body, urls, err := fetcher.Fetch(url)
 	if err != nil {
 		fmt.Println(err)
@@ -40,9 +42,12 @@ func Crawl(url string, depth int, wg *sync.WaitGroup) {
 	return
 }
 
+var c <-chan time.Time
+
 func main() {
 	var wg sync.WaitGroup
 
+	c = time.Tick(time.Second)
 	wg.Add(1)
 	Crawl("http://golang.org/", 4, &wg)
 	wg.Wait()
