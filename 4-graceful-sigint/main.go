@@ -13,10 +13,28 @@
 
 package main
 
+import (
+	"os"
+	"os/signal"
+)
+
 func main() {
 	// Create a process
 	proc := MockProcess{}
 
+	// if we're not ready to receive when the signal is sent.
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+
 	// Run the process (blocking)
-	proc.Run()
+	go func() {
+		proc.Run()
+	}()
+
+	// Block until a signal is received.
+	<-c
+	go func() {
+		proc.Stop()
+	}()
+	<-c
 }

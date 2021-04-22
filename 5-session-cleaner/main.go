@@ -20,17 +20,21 @@ package main
 import (
 	"errors"
 	"log"
+	"sync"
+	"time"
 )
 
 // SessionManager keeps track of all sessions from creation, updating
 // to destroying.
 type SessionManager struct {
 	sessions map[string]Session
+	Lock     sync.RWMutex
 }
 
 // Session stores the session's data
 type Session struct {
-	Data map[string]interface{}
+	Data    map[string]interface{}
+	Updated time.Time
 }
 
 // NewSessionManager creates a new sessionManager
@@ -38,6 +42,14 @@ func NewSessionManager() *SessionManager {
 	m := &SessionManager{
 		sessions: make(map[string]Session),
 	}
+	go func(m *SessionManager) {
+		for {
+			select {
+			case <-time.After(time.Second * 5):
+				m.CleanSession()
+			}
+		}
+	}(m)
 
 	return m
 }
@@ -48,12 +60,22 @@ func (m *SessionManager) CreateSession() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	m.sessions[sessionID] = Session{
 		Data: make(map[string]interface{}),
 	}
 
 	return sessionID, nil
+}
+
+// CleanSessions
+func (m *SessionManager) CleanSession() {
+	for key, sess := range m.sessions {
+		if sess.Updated.Before(time.Now().Add(-5 * time.Second)) {
+			m.Lock.Lock()
+			delete(m.sessions, key)
+			m.Lock.Unlock()
+		}
+	}
 }
 
 // ErrSessionNotFound returned when sessionID not listed in
@@ -77,9 +99,12 @@ func (m *SessionManager) UpdateSessionData(sessionID string, data map[string]int
 		return ErrSessionNotFound
 	}
 
-	// Hint: you should renew expiry of the session here
+	defer m.Lock.Unlock()
+	m.Lock.Lock()
+
 	m.sessions[sessionID] = Session{
-		Data: data,
+		Data:    data,
+		Updated: time.Now(),
 	}
 
 	return nil
