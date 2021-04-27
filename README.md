@@ -1,6 +1,7 @@
 # Go Concurrency Exercises [![Build Status](https://travis-ci.org/mindworker/go-concurrency-exercises.svg?branch=master)](https://travis-ci.org/mindworker/go-concurrency-exercises) [![Go Report Card](https://goreportcard.com/badge/github.com/mindworker/go-concurrency-exercises)](https://goreportcard.com/report/github.com/mindworker/go-concurrency-exercises)
 Exercises for Golang's concurrency patterns.
 
+
 ## Why
 The Go community has plenty resources to read about go's concurrency model and how to use it effectively. But *who actually wants to read all this*!? This repo tries to teach concurrency patterns by following the 'learning by doing' approach.
 
@@ -12,7 +13,7 @@ The Go community has plenty resources to read about go's concurrency model and h
 3. If you get stuck, join us on [Slack](https://gophersinvite.herokuapp.com/)! I'm sure there will be people who are happy to give you some code review (if not, find me via @beertocode ;) )
 
 ## Overview
-| # | Name of the Challenge + URL           | 
+| # | Name of the Challenge + URL           |
 | - |:-------------|
 | 0 | [Limit your Crawler](https://github.com/mindworker/go-concurrency-exercises/tree/master/0-limit-crawler) |
 | 1 | [Producer-Consumer](https://github.com/mindworker/go-concurrency-exercises/tree/master/1-producer-consumer)  |
@@ -24,17 +25,17 @@ The Go community has plenty resources to read about go's concurrency model and h
 ## License
 
 ```
- DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
-                    Version 2, December 2004 
+ DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+                    Version 2, December 2004
 
  Copyleft from 2017 Long Hoang
 
- Everyone is permitted to copy and distribute verbatim or modified 
- copies of this license document, and changing it is allowed as long 
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
  as the name is changed.
 
-            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
-   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
 
   0. You just DO WHAT THE FUCK YOU WANT TO.
 ```
